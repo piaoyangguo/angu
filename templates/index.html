@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="/static/js/angular/1.4.6/angular.min.js"></script>
+</head>
+
+<body ng-app="myNoteApp" ng-controller="myNoteCtrl">
+显示 HTML: <input type="checkbox" ng-model="myVar">
+<div ng-show="myVar">
+{#    {% for b in books %}#}
+        <p ng-repeat="b in books">
+            <b ng-bind-template="{% templatetag openvariable %}::b.name{% templatetag closevariable %}"></b>
+            <img ng-src="{% templatetag openvariable %}b.img{% templatetag closevariable %}" alt="" height="100" width="100">
+        </p>
+
+{#    {% endfor %}#}
+</div>
+
+</body>
+</html>
+<script>
+    var app = angular.module("myNoteApp", []);
+    app.controller("myNoteCtrl", function ($scope) {
+
+        $scope.books = [
+        {% for b in books %}
+            {
+                "name": "{{ b.name }}",
+                "img": "{{ b.avar.url }}",
+            }
+        {% endfor %}{% if not forloop.last %},{% endif %}
+        ];
+        console.log($scope.books)
+
+    });
+</script>
